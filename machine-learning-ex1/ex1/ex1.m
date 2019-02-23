@@ -74,6 +74,7 @@ pause;
 
 fprintf('\nRunning Gradient Descent ...\n')
 % run gradient descent
+pause;
 theta = gradientDescent(X, y, theta, alpha, iterations);
 
 % print theta to screen
