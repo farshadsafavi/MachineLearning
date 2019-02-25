@@ -18,9 +18,12 @@ for iter = 1:num_iters
     %       of the cost function (computeCostMulti) and gradient here.
     %
     prediction = X*theta;
-    for i = 1:(size(X,2))
-      theta(i) = theta(i) - alpha*(1/m)*sum((prediction - y).*X(:, i));
-    endfor
+    % Verctorized model
+    theta = theta -((1/m) * (prediction - y)' * X)' * alpha;
+    
+    %for i = 1:(size(X,2))
+    %  theta(i) = theta(i) - alpha*(1/m)*sum((prediction - y).*X(:, i));
+    %endfor
 
 
 
