@@ -61,6 +61,48 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+X = [ones(m, 1) X]; % Add a column of ones to x
+%disp("size of X")
+%disp(size(X))
+%disp("size of theta1")
+%disp(size(Theta1))
+z2 = X*Theta1';
+a2 = sigmoid(z2);
+a2 = [ones(m, 1) a2];
+%disp("size of a2")
+%disp(size(a2))
+z3 = a2*Theta2';
+a3 = sigmoid(z3);
+%disp("size of a3")
+%disp(size(a3))
+%disp("size of Y")
+%disp(size(y))
+%disp(a3(1,:))
+%disp(y(1))
+%disp("size of num_labels")
+%disp(num_labels)
+I = eye(num_labels);
+y_hot = I(y,:);
+%disp("size of Y hot")
+%disp(size(y_hot))
+
+cost = -y_hot.*log(a3) - ((1 - y_hot).*log(1 - a3));
+%disp("size of cost")
+%disp(size(cost))
+J = sum(cost, 2); % add all errors along the rows means add all columns
+J = (1/m) * sum(J);
+%disp("size of Theta1")
+%disp(size(Theta1(:,2:end)))
+%disp("size of Theta2")
+%disp(size(Theta2(:,2:end)))
+%disp("size of sum")
+%disp(size(sum(Theta1(:,2:end).*Theta1(:,2:end) ,2)));
+reg = sum(sum(Theta1(:,2:end).^2 ,2)) + sum(sum(Theta2(:,2:end).^2 ,2));
+reg = (lambda/(2*m))*reg;
+%disp("reg value")
+%disp(reg);          
+J = J + reg;
+
 
 
 
