@@ -103,9 +103,32 @@ reg = (lambda/(2*m))*reg;
 %disp(reg);          
 J = J + reg;
 
+dz3 = a3 -  y_hot;
+%disp("size of dz3")
+%disp(size(dz3))
+%disp("size of a2")
+%disp(size(a2))
+dw2 = dz3' * a2;
+disp("size of dw2")
+disp(size(dw2))
+disp("size of dz3")
+disp(size(dz3))
+disp("size of theta2")
+disp(size(Theta2))
+da2 = a2 .* (1 - a2);
+disp("size of da2")
+disp(size(da2))
+dz2 = dz3 * Theta2;
+dz2 = dz2(:,2:end) .* da2(:,2:end) ;
+disp("size of dz2")
+disp(size(dz2))
+dw1 = dz2' * X;
+disp("size of dw1")
+disp(size(dw1))
+Theta1_grad = (dw1 / m) + (lambda/m)*[zeros(hidden_layer_size , 1) Theta1(:,2:end)];
+Theta2_grad = (dw2 / m) + (lambda/m)*[zeros(num_labels , 1) Theta2(:,2:end)];
 
-
-
+grad = [Theta1_grad(:) ; Theta2_grad(:)];
 
 
 
