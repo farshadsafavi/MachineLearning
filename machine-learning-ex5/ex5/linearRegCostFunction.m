@@ -18,20 +18,21 @@ grad = zeros(size(theta));
 %
 %               You should set J to the cost and grad to the gradient.
 %
-
-
-
-
-
-
-
-
-
-
-
-
 % =========================================================================
+%disp("Size of X and theta")
+%disp(size(X))
+%disp(size(theta))
+h = X*theta;
 
-grad = grad(:);
+J = (1/(2*m))*sum((h - y).^2) + (lambda/(2*m))*sum(theta(2:end).^2);
+%disp("Size of X and error")
+%disp(size(X))
+%disp(size(h - y))
+G = (lambda/m) * theta;
+G(1) = 0; % this is always 0
+grad = (1.0/m)*X'*(h - y) + G;
+%disp("grad")
+%disp(size(grad))
+
 
 end
