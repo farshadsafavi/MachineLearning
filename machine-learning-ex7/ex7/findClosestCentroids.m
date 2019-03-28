@@ -20,9 +20,16 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
-
-
-
+m = size(X, 1);
+disp(size(X));
+for i = 1:m,
+  T = [];
+  for j = 1:K,
+    T = [T;X(i,:)];
+  endfor
+  %sum of squars among exis 2(col)
+  [Min , idx(i)] = min(sum((T - centroids).^2 , 2));
+endfor
 
 
 
