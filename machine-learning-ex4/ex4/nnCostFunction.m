@@ -61,90 +61,32 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
-X = [ones(m, 1) X]; % Add a column of ones to x
-%disp("size of X")
-%disp(size(X))
-%disp("size of theta1")
-%disp(size(Theta1))
-z2 = X*Theta1';
+
+
+[row, col] = size(X);
+a1 = [ones(row, 1), X];
+
+z2 = a1* Theta1';
 a2 = sigmoid(z2);
-a2 = [ones(m, 1) a2];
-%disp("size of a2")
-%disp(size(a2))
-z3 = a2*Theta2';
+[row, col] = size(a2);
+a2 = [ones(row, 1), a2];
+
+z3 = a2* Theta2';
 a3 = sigmoid(z3);
-%disp("size of a3")
-%disp(size(a3))
-%disp("size of Y")
-%disp(size(y))
-%disp(a3(1,:))
-%disp(y(1))
-%disp("size of num_labels")
-%disp(num_labels)
+
 I = eye(num_labels);
 y_hot = I(y,:);
-%disp("size of Y hot")
-%disp(size(y_hot))
 
-cost = -y_hot.*log(a3) - ((1 - y_hot).*log(1 - a3));
-%disp("size of cost")
-%disp(size(cost))
-J = sum(cost, 2); % add all errors along the rows means add all columns
-J = (1/m) * sum(J);
-%disp("size of Theta1")
-%disp(size(Theta1(:,2:end)))
-%disp("size of Theta2")
-%disp(size(Theta2(:,2:end)))
-%disp("size of sum")
-%disp(size(sum(Theta1(:,2:end).*Theta1(:,2:end) ,2)));
-reg = sum(sum(Theta1(:,2:end).^2 ,2)) + sum(sum(Theta2(:,2:end).^2 ,2));
-reg = (lambda/(2*m))*reg;
-%disp("reg value")
-%disp(reg);          
-J = J + reg;
+J = (-1.0/m)*sum(sum(y_hot.*log(a3) + (1 - y_hot).*log(1 - a3),2)) + (lambda/(2.0*m))* (sum(sum(Theta1(:, 2:end).^2, 2) )+ sum(sum(Theta2(:,2:end).^2, 2)));
 
-dz3 = a3 -  y_hot;
-%disp("size of dz3")
-%disp(size(dz3))
-%disp("size of a2")
-%disp(size(a2))
-dw2 = dz3' * a2;
-disp("size of dw2")
-disp(size(dw2))
-disp("size of dz3")
-disp(size(dz3))
-disp("size of theta2")
-disp(size(Theta2))
-da2 = a2 .* (1 - a2);
-disp("size of da2")
-disp(size(da2))
-dz2 = dz3 * Theta2;
-dz2 = dz2(:,2:end) .* da2(:,2:end) ;
-disp("size of dz2")
-disp(size(dz2))
-dw1 = dz2' * X;
-disp("size of dw1")
-disp(size(dw1))
+er3 = a3 - y_hot;
+dw2 = er3' * a2;
+
+er2 = (er3*Theta2)(:,2:end).*sigmoidGradient(z2);
+dw1 = er2' * a1;
+
 Theta1_grad = (dw1 / m) + (lambda/m)*[zeros(hidden_layer_size , 1) Theta1(:,2:end)];
 Theta2_grad = (dw2 / m) + (lambda/m)*[zeros(num_labels , 1) Theta2(:,2:end)];
-
-grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 % -------------------------------------------------------------
 
 % =========================================================================
